@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+
+<Plantilla name="raiz">
+
+
+
+		<usuario name="jrc16" password="1234" rol="CEDA"></usuario>
+		
+	
+	
+</Plantilla>

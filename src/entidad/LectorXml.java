@@ -2,6 +2,7 @@ package entidad;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -24,6 +25,42 @@ public class LectorXml {
 	}
 //---------------------------------------------------------------------------------
 
+	public List<String> obtenerUsuarios(String nombre){
+		List<String> datos = new ArrayList<String>();
+		SAXBuilder builder = new SAXBuilder();
+	    File xmlFile = new File( "C:\\Users\\gollo\\Desktop\\eclipse\\usuario.xml" );
+	    try
+	    {
+	        //Se crea el documento a traves del archivo
+	        Document document = (Document) builder.build( xmlFile );
+	 
+	        //Se obtiene la raiz 'tables'
+	        Element rootNode = document.getRootElement();
+	      
+	        List<Element> list = rootNode.getChildren();
+	       
+	        for(int x=0;x<list.size();x++){
+	        	
+	        	if(list.get(x).getAttributeValue("name").equals(nombre)){
+	        		System.out.println(list.get(x).getAttributeValue("password"));
+	        		datos.add(list.get(x).getAttributeValue("password"));
+	        		datos.add(list.get(x).getAttributeValue("rol"));
+	        	}
+	        }
+	 
+		        
+		    }catch ( IOException io ) {
+		        System.out.println( io.getMessage() );
+		    }catch ( JDOMException jdomex ) {
+		        System.out.println( jdomex.getMessage() );
+		    }
+		    return datos;
+	
+	}
+	 
+	
+	
+//--------------------------------------------------------------------
 	public Documento leer(Documento documento,String nombrePlantilla){
 		 SAXBuilder builder = new SAXBuilder();
 		 File fichero = new File(nombrePlantilla);

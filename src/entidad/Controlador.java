@@ -32,6 +32,24 @@ public class Controlador {
 		
 		
 	}
+	
+//-----------------------------------------------------------------------------------------------------
+	public boolean autenticar(String nombre,String contraseña,String TipoUsuario){
+		LectorXml xml=new LectorXml();
+		List<String>datos=xml.obtenerUsuarios(nombre);
+		if(datos.size()==0){
+			System.out.println("incorrecto");
+			return false;
+		}
+		if( datos.get(0).equals(contraseña) && datos.get(1).equals(TipoUsuario)){
+			System.out.println("correcto");
+			return true;
+			
+		}
+		System.out.println("incorrecto");
+		return false;
+		
+	}
 //---------------------------------------------------------------------------------------------------------------
 	public void crearSeccion(String idSeccion,String idNombre) throws ParserConfigurationException, TransformerFactoryConfigurationError, TransformerException{
 		Documento d=new Seccion(idSeccion,idNombre);
