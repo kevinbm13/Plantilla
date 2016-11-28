@@ -39,11 +39,19 @@ public class Controlador {
 		crearArchivoXml(lector.getNombre(), documento);
 	}
 //-----------------------------------------------------------------------------------------------------------------
-	public void crearElemento(String idElemento,String idNombre) throws ParserConfigurationException, TransformerFactoryConfigurationError, TransformerException{
+	public void crearElemento(String idElemento,String idNombre,String idSeccion) throws ParserConfigurationException, TransformerFactoryConfigurationError, TransformerException{
+		List<Documento>secciones=obtenerSecciones();
 		Documento d=new Elemento(idElemento,idNombre);
 		d.setContenido("AgregarDescripción");
-		documento.add(d);
-		System.out.println(lector.getNombre());
+		for(int x=0;x<secciones.size();x++){
+			if(idSeccion.equals(secciones.get(x).getId())){
+				List<Documento>elementos=secciones.get(x).getListaSeccion();
+				elementos.add(d);
+				
+			}
+		}
+	
+		
 		crearArchivoXml(lector.getNombre(), documento);
 		
 	
@@ -128,11 +136,14 @@ public class Controlador {
 	public List<Documento> obtenerSecciones(){
 		List<Documento>seccion=documento.getListaSeccion();
 		List<Documento>seccionNueva=new ArrayList<Documento>();
+		
 		for(int x=0;x<seccion.size();x++){
+			
 			if(seccion.get(x).getListaSeccion()!=null){
 				
 				seccionNueva.add(seccion.get(x));
 				obtenerHijoSeccion(seccion.get(x),seccionNueva);
+				
 			}
 		
 		}
@@ -144,11 +155,11 @@ public class Controlador {
 		public void obtenerHijoSeccion(Documento d,List<Documento>seccionNueva){
 			List<Documento>seccion=d.getListaSeccion();
 			for(int x=0;x<seccion.size();x++){
-				if(seccion.get(x).getListaSeccion()!=null){
-					
-					
-					obtenerHijoSeccion(seccion.get(x),seccionNueva);
+				if(seccion.get(x).getListaSeccion()!=null ){
 					seccionNueva.add(seccion.get(x));
+					obtenerHijoSeccion(seccion.get(x),seccionNueva);
+					
+					
 				}
 				
 				

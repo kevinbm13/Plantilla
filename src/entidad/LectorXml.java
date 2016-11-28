@@ -33,9 +33,10 @@ public class LectorXml {
 		    {
 		        //Se crea el documento a traves del archivo
 		        Document document = (Document) builder.build( xmlFile );
+		 
 		        Element rootNode = document.getRootElement();//Plantilla
-		      
-		        crearEstructura(rootNode,documento);        
+		     
+		        crearEstructura(rootNode,documento,document);        
 		        
 		    }catch ( IOException io ) {
 		        System.out.println( io.getMessage() );
@@ -46,24 +47,24 @@ public class LectorXml {
 	}
 //--------------------------------------------------------------------------------------------------------
 	
-	public void crearEstructura(Element nodo,Documento documento){
+	public void crearEstructura(Element nodo,Documento documento,Document c){
+		Element nodoRaiz=c.getRootElement();
 		List<Element> nodosHijos= nodo.getChildren();
 	    for ( int i = 0; i<nodosHijos.size(); i++ )
         {
            
             Element nodoHijo = (Element) nodosHijos.get(i);//Se obtiene el elemento
             List<Element> nodosHijosSecundarios=nodoHijo.getChildren();
-            if(nodosHijosSecundarios.size()==0){
-            	
+            if(nodosHijosSecundarios.size()!=0 || nodoHijo.getParent()==nodoRaiz ){
+            	Documento seccion=new Seccion(nodoHijo.getAttributeValue("id"),nodoHijo.getAttributeValue("name"));
+            	documento.add(seccion);
+            	crearEstructura(nodoHijo,seccion,c);
+            }
+            else{
             	Documento d = new Elemento(nodoHijo.getAttributeValue("id"),nodoHijo.getAttributeValue("name"));
             	d.setContenido(nodoHijo.getText());
             	documento.add(d);
-            
-            }
-            else{
-            	Documento seccion=new Seccion(nodoHijo.getAttributeValue("id"),nodoHijo.getAttributeValue("name"));
-            	documento.add(seccion);
-            	crearEstructura(nodoHijo,seccion);
+            	
             }
             
            
